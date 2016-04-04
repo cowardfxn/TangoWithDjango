@@ -1,0 +1,10 @@
+{% extends 'rango/base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Restricted{% endblock %}
+
+{% block body_block %}
+        <h1>Rango says...</h1>
+        <strong>{{ restrictedmessage }}</strong><br/>
+{% endblock %}

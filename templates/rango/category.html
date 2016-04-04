@@ -1,0 +1,48 @@
+{% extends 'rango/base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}{{ category_name }}{% endblock %}
+
+{% block body_block %}
+    <h1>{{ category_name }}</h1>
+    {% if category %}
+        <ul>
+            {% for category in categories %}
+                <li><a href="{% url 'category' category.slug %}">{{ category.name }}</a></li>
+            {% endfor %}
+        </ul>
+
+        {% if pages %}
+            <ul>
+                {% for page in pages %}
+                    {#                    <li><a href="{{ page.url }}">{{ page.title }}</a></li>#}
+                    <li><a href="{% url 'goto' page.id %}">{{ page.title }}</a></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <strong>No page currently in category.</strong>
+        {% endif %}
+
+        <p class="col-md-offset-8">
+            <strong id="like_count">{{ category.likes }}</strong> people like this category.
+            {% if user.is_authenticated %}
+                <button id="likes" data-catid="{{ category.id }}" class="btn btn-primary" type="button">
+                    <span class="glyphicon glyphicon-thumbs-up"></span>
+                    Like
+                </button>
+
+                <br/>
+                <a href="/rango/category/{{ category.slug }}/add_page">Add a page</a>
+                {#            <a href="{% url 'category' category.slug 'add_page' %}">Add a page</a>#}
+            {% endif %}
+        </p>
+    {% else %}
+        The specified category {{ category_name }} does not exist!
+    {% endif %}
+
+    {% if user.is_authenticated %}
+        <br/>
+        {% include 'rango/search.html' %}
+    {% endif %}
+{% endblock %}
